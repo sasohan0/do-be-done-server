@@ -37,6 +37,20 @@ async function run() {
       const tasks = await cursor.toArray();
       res.send(tasks);
     });
+
+    app.post("/tasks", async (req, res) => {
+      const addedTask = req.body;
+      const result = await taskCollection.insertOne(addedTask);
+      res.send(result);
+    });
+
+    app.delete("/tasks/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await taskCollection.deleteOne(query);
+      res.send(result);
+    });
+
     console.log("connected to mongoDB");
   } finally {
   }
